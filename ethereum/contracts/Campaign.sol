@@ -3,7 +3,7 @@ pragma solidity ^0.8.11;
 contract Campaign {
     address public manager;
     uint public minimumContribution;
-    mapping(address => bool) approvers;
+    mapping(address => bool) public approvers;
     mapping(uint => Request) public requests;
     uint public numberOfRequests;
     uint public approversCount;

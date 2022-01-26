@@ -1,0 +1,29 @@
+{
+  "name": "crowdfunding",
+  "version": "1.0.0",
+  "description": "Crowd funding is the blockchain application which using smart contracts to create compaign and raise the funds\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jay-web/crowd-funding.git"
+  },
+  "author": "jay sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jay-web/crowd-funding/issues"
+  },
+  "homepage": "https://github.com/jay-web/crowd-funding#readme",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.7.0",
+    "fs-extra": "^10.0.0",
+    "ganache-cli": "^6.1.8",
+    "solc": "^0.8.11",
+    "web3": "^1.7.0"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.4"
+  }
+}
