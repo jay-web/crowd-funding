@@ -1,21 +1,25 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Menu } from 'semantic-ui-react'
+import { useRouter } from 'next/router'
 
-export default class Header extends Component {
-  state = {}
+ const Header = () => {
+  const [activeItem, setActiveItem ] = useState({});
+  let router = useRouter();
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
-  render() {
-    const { activeItem } = this.state
+  const handleItemClick = (e) => {
+    e.preventDefault();
+    router.push('/');
+  }
+    
 
     return (
-      <Menu>
+      <Menu color='black' inverted >
     
         <Menu.Item
           name='submit'
           active={activeItem === 'submit'}
-          onClick={this.handleItemClick}
+          onClick={handleItemClick}
+          
         >
           CrowdFunding
         </Menu.Item>
@@ -24,7 +28,7 @@ export default class Header extends Component {
           <Menu.Item
             name='signup'
             active={activeItem === 'signup'}
-            onClick={this.handleItemClick}
+            onClick={handleItemClick}
           >
             Sign Up
           </Menu.Item>
@@ -32,12 +36,14 @@ export default class Header extends Component {
           <Menu.Item
             name='help'
             active={activeItem === 'help'}
-            onClick={this.handleItemClick}
+            onClick={handleItemClick}
           >
-            Help
+            About us
           </Menu.Item>
         </Menu.Menu>
       </Menu>
     )
-  }
+  
 }
+
+export default Header;

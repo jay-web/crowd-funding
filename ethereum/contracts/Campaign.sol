@@ -1,6 +1,7 @@
 pragma solidity ^0.8.11;
 
 contract Campaign {
+    string public name;
     address public manager;
     uint public minimumContribution;
     mapping(address => bool) public approvers;
@@ -8,6 +9,7 @@ contract Campaign {
     uint public numberOfRequests;
     uint public approversCount;
     uint public fundReceived;
+    string public description;
 
     struct Request {
         string description;
@@ -23,9 +25,11 @@ contract Campaign {
         _;
     }
 
-    constructor (uint minimum, address creator) {
+    constructor (string memory campaignName, uint minimum, address creator, string memory desc) {
         manager = creator;
         minimumContribution = minimum;
+        description = desc;
+        name = campaignName;
     }
 
     function contribute() public payable {
@@ -72,6 +76,21 @@ contract Campaign {
         request.recipient.transfer(request.value); 
         fundReceived -= request.value;
         request.complete = true;
+    }
+
+
+    function getSummary() public view returns(
+        string memory , address, uint, uint, uint, uint, string memory
+    ) {
+        return (
+            name,
+            manager,
+            minimumContribution,
+            numberOfRequests,
+            approversCount,
+            fundReceived,
+            description
+        );
     }
 }
 

@@ -5,8 +5,8 @@ import "./Campaign.sol";
 contract CrowdFunding {
     address[] public numberOfCampaigns;
 
-    function createCampaign(uint minimum) public {
-        Campaign newAddress = new Campaign(minimum, msg.sender);
+    function createCampaign(string memory name, uint minimum, string memory description) public {
+        Campaign newAddress = new Campaign(name, minimum, msg.sender, description);
         numberOfCampaigns.push(address(newAddress));
     }
 
