@@ -3,7 +3,8 @@ import factory from "../ethereum/factory";
 import "semantic-ui-css/semantic.min.css";
 
 import Campaigns from "../components/campaigns";
-import CreateCampaign from "../components/createCampaign";
+
+import CustomButton from "../components/customButton";
 
 import Layout from "../components/layout";
 import { useRouter } from "next/router";
@@ -13,11 +14,12 @@ const CampaignIndex = (props) => {
   return (
     <>
       <Layout>
-        <CreateCampaign
+        <CustomButton
           content="Create Campaign"
-          iconName="add circle"
+          iconName="add"
           floated={true}
-          onClick={() => router.push("/campaign/new")}
+          onSubmit={() => router.push("/campaign/new")}
+          loading={false}
         />
         <Campaigns campaigns={props.cam} />
       </Layout>

@@ -3,7 +3,9 @@ import Layout from "../../components/layout";
 import { useRouter } from "next/router";
 import campaignInstance from "../../ethereum/campaign";
 import DetailCard from "../../components/detailsCard";
-import { Icon, Label } from "semantic-ui-react";
+import { Icon, Label, Grid } from "semantic-ui-react";
+
+import ContributionForm from "../../components/contribute";
 
 const CampaignDetails = (props) => {
   const router = useRouter();
@@ -15,7 +17,16 @@ const CampaignDetails = (props) => {
       <Label style={{marginBottom: '1rem'}}>
         <Icon name="address card" /> {address}
       </Label>
-      <DetailCard details={props} />
+      <Grid>
+        <Grid.Column width={10}>
+        <DetailCard details={props} />
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <ContributionForm id={address} />
+        </Grid.Column>
+      </Grid>
+     
+      
     </Layout>
   );
 };
