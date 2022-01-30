@@ -13,7 +13,9 @@ const initialState = {
 
 }
 
-const NewCampaign = (props) => {
+const CampaignForm = (props) => {
+
+  const {label1, label2, label3 } = props.info;
 
   const [campaignInfo, setCampaignInfo] = useState(initialState);
   const [error, setErrorMessage] = useState({ errorStatus: false, errorMessage: ''});
@@ -27,13 +29,13 @@ const NewCampaign = (props) => {
 
     try {
       const accounts = await web3.eth.getAccounts();
-      
+      console.log(campaignInfo);
       await factory.methods
         .createCampaign(campaignInfo.name, campaignInfo.contribution, campaignInfo.description)
         .send({ from: accounts[0] });
         router.push('/');
     } catch (err) {
-      
+      console.log(err.Message)
       setErrorMessage({errorStatus: true, errorMessage: err.message});
     }
 
@@ -44,7 +46,7 @@ const NewCampaign = (props) => {
     <Layout>
       <Form error={error.errorStatus}>
         <Form.Field>
-          <label>Campaign Name</label>
+          <label>{label1}</label>
           <input 
             placeholder="Campaign Name" 
             value={campaignInfo.name}
@@ -52,7 +54,7 @@ const NewCampaign = (props) => {
             />
         </Form.Field>
         <Form.Field>
-          <label>Campaign Description</label>
+          <label>{label2}</label>
           <input 
             placeholder="Tell us something about campaign" 
             value={campaignInfo.description}
@@ -60,7 +62,7 @@ const NewCampaign = (props) => {
             />
         </Form.Field>
         <Form.Field>
-          <label>Minimum Contribution in (Wei) </label>
+          <label>{label3}</label>
           <Input
             label="wei"
             labelPosition="right"
@@ -69,10 +71,7 @@ const NewCampaign = (props) => {
             onChange={(event) => setCampaignInfo({...campaignInfo, contribution: event.target.value})}
           />
         </Form.Field>
-        <Form.Field>
-          {/* <Checkbox label="I agree to the Terms and Conditions" /> */}
-        </Form.Field>
-        {/* <Button type="submit">Submit</Button> */}
+       
         
         <Message error negative>
           <Message.Header>

@@ -1,18 +1,21 @@
 import React from "react";
-import { Card } from "semantic-ui-react";
+import { Card, Button, Icon } from "semantic-ui-react";
 import web3 from "../ethereum/web3";
+import { useRouter } from "next/router";
 
 const DetailCard = (props) => {
+  const router = useRouter();
   const {
     minimumContribution,
     numberOfRequests,
     approversCount,
     fundReceived,
-    manager
+    manager,
+    id
   } = props.details;
   return (
     <Card.Group>
-       <Card fluid>
+      <Card fluid>
         <Card.Content
           header="Creator of the campaign"
           meta="Address of the creator who has started this campaign"
@@ -32,6 +35,16 @@ const DetailCard = (props) => {
           meta="Number of requests"
           description={numberOfRequests}
         />
+        <Card.Content>
+          <Button 
+            size="tiny"
+            icon labelPosition="left" 
+            color="green"
+            onClick={() => router.push(`/campaign/${encodeURIComponent(id)}/requests`)}>
+            <Icon name="boxes" />
+            View Requests
+          </Button>
+        </Card.Content>
       </Card>
       <Card>
         <Card.Content
@@ -44,7 +57,7 @@ const DetailCard = (props) => {
         <Card.Content
           header="Balance (In Ether)"
           meta="Amount left in the campaign"
-          description={web3.utils.fromWei(fundReceived, 'ether')}
+          description={web3.utils.fromWei(fundReceived, "ether")}
         />
       </Card>
     </Card.Group>

@@ -32,6 +32,9 @@ const ContibutionForm = (props) => {
           from: accounts[0],
           value: web3.utils.toWei(contribution, "ether"),
         });
+        router.replace(`/campaign/${encodeURIComponent(campaignId)}`)
+        console.log('done')
+        setContribution(0)
     } catch (err) {
       console.log(err.Message);
       setErrorMessage({ errorStatus: true, errorMessage: err.message });

@@ -1,11 +1,11 @@
 import React from "react";
-import Layout from "../../components/layout";
+import Layout from "../../../components/layout";
 import { useRouter } from "next/router";
-import campaignInstance from "../../ethereum/campaign";
-import DetailCard from "../../components/detailsCard";
+import campaignInstance from "../../../ethereum/campaign";
+import DetailCard from "../../../components/detailsCard";
 import { Icon, Label, Grid } from "semantic-ui-react";
 
-import ContributionForm from "../../components/contribute";
+import ContributionForm from "../../../components/contribute";
 
 const CampaignDetails = (props) => {
   const router = useRouter();
@@ -44,6 +44,7 @@ CampaignDetails.getInitialProps = async (props) => {
     approversCount: summary[4],
     fundReceived: summary[5],
     description: summary[6],
+    id: props.query.campaignId 
   };
 };
 

@@ -40,14 +40,14 @@ contract Campaign {
         fundReceived += msg.value;
     }
 
-    function createRequest(string memory description, uint value, address payable recipient) public onlyOwner returns(uint requestId) {
+    function createRequest(string memory descrip, uint amountNeed, address payable recip) public onlyOwner returns(uint requestId) {
 
         requestId = numberOfRequests++;
         Request storage newRequest = requests[requestId];
 
-        newRequest.description = description;
-        newRequest.value =value;
-        newRequest.recipient = recipient;
+        newRequest.description = descrip;
+        newRequest.value = amountNeed;
+        newRequest.recipient = recip;
         newRequest.complete = false;
         newRequest.approvalCount = 0;
 
@@ -92,5 +92,8 @@ contract Campaign {
             description
         );
     }
+
+    
+   
 }
 

@@ -14,6 +14,7 @@ const CampaignIndex = (props) => {
   return (
     <>
       <Layout>
+        
         <CustomButton
           content="Create Campaign"
           iconName="add"
@@ -22,6 +23,7 @@ const CampaignIndex = (props) => {
           loading={false}
         />
         <Campaigns campaigns={props.cam} />
+        
       </Layout>
     </>
   );
@@ -29,7 +31,7 @@ const CampaignIndex = (props) => {
 
 CampaignIndex.getInitialProps = async () => {
   let cam = await factory.methods.getDeployedCampaigns().call();
-  console.log(cam);
+  
   return { cam: cam };
 };
 
