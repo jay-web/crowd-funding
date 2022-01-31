@@ -24,3 +24,4 @@ Note - Create note.js file in root folder and paste the below code :
       mnemonic : "paste your meta mask mnemonic",
       networkID : "Paste your RINKYBY OR ROPSTEN network id""
      }
+     module.exports = config;
