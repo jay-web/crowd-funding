@@ -25,18 +25,18 @@ import { useRouter } from 'next/router'
         </Menu.Item>
 
         <Menu.Menu position='right'>
-          <Menu.Item
+          {/* <Menu.Item
             name='signup'
             active={activeItem === 'signup'}
             onClick={handleItemClick}
           >
             Sign Up
-          </Menu.Item>
+          </Menu.Item> */}
 
           <Menu.Item
             name='help'
             active={activeItem === 'help'}
-            onClick={handleItemClick}
+            onClick={() => router.push('/aboutus')}
           >
             About us
           </Menu.Item>

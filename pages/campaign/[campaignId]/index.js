@@ -10,7 +10,7 @@ import ContributionForm from "../../../components/contribute";
 const CampaignDetails = (props) => {
   const router = useRouter();
   const address = router.query.campaignId;
-  console.log(props);
+  
   return (
     <Layout>
       <h1>Campaign : {props.name.toUpperCase()}</h1>
@@ -18,8 +18,8 @@ const CampaignDetails = (props) => {
         <Icon name="address card" /> {address}
       </Label>
       <Grid>
-        <Grid.Column width={10}>
-        <DetailCard details={props} />
+        <Grid.Column width={10} >
+          <DetailCard details={props} />
         </Grid.Column>
         <Grid.Column width={6}>
           <ContributionForm id={address} />
@@ -32,10 +32,10 @@ const CampaignDetails = (props) => {
 };
 
 CampaignDetails.getInitialProps = async (props) => {
-  // console.log(props);
+  
   let campaign = await campaignInstance(props.query.campaignId);
   let summary = await campaign.methods.getSummary().call();
-  console.log("SUMM", summary);
+  
   return {
     name: summary[0],
     manager: summary[1],

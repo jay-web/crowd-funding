@@ -5,6 +5,7 @@ import CustomButton from "../../components/customButton";
 import factory from "../../ethereum/factory";
 import web3 from "../../ethereum/web3";
 import { useRouter } from 'next/router';
+import InfoMessage from "../../components/message";
 
 const initialState = {
   name: '',
@@ -16,33 +17,48 @@ const initialState = {
 const NewCampaign = (props) => {
 
   const [campaignInfo, setCampaignInfo] = useState(initialState);
-  const [error, setErrorMessage] = useState({ errorStatus: false, errorMessage: ''});
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, message: ''});
+  const [loading, setLoading] = useState({status: false, message: ''});
+ 
   const router = useRouter();
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    setErrorMessage({errorStatus: false, errorMessage: ''});
+    setLoading({status: true, message: 'Transacting approving request'});
+    setError({status: false, message: ''});
+
+    const {name, contribution, description} = campaignInfo;
+    if(name == '' || contribution <=0 || description == ''){
+      setLoading({status: false, message: ''});
+      setError({status: true, message: 'Please fill up above mandatory fields'});
+      return;
+    }
 
     try {
       const accounts = await web3.eth.getAccounts();
       
       await factory.methods
-        .createCampaign(campaignInfo.name, campaignInfo.contribution, campaignInfo.description)
+        .createCampaign(name, contribution, description)
         .send({ from: accounts[0] });
+        setLoading({status: false, message: ''});
         router.push('/');
     } catch (err) {
       
-      setErrorMessage({errorStatus: true, errorMessage: err.message});
+      setLoading({status: false, message: ''});
+      setError({ status: true, message: err.message });
     }
 
-    setLoading(false);
+    
   };
+
+  const handleDismiss = () => {
+    setLoading({ status: false, message: ''})
+    setError({ status: false, message: ''})
+  }
 
   return (
     <Layout>
-      <Form error={error.errorStatus}>
+      <Form >
         <Form.Field>
           <label>Campaign Name</label>
           <input 
@@ -69,23 +85,15 @@ const NewCampaign = (props) => {
             onChange={(event) => setCampaignInfo({...campaignInfo, contribution: event.target.value})}
           />
         </Form.Field>
-        <Form.Field>
-          {/* <Checkbox label="I agree to the Terms and Conditions" /> */}
-        </Form.Field>
-        {/* <Button type="submit">Submit</Button> */}
+        <InfoMessage error={error} loading={loading} handleDismiss={handleDismiss} />
         
-        <Message error negative>
-          <Message.Header>
-            Oopss!!
-          </Message.Header>
-          <p>{error.errorMessage}</p>
-        </Message>
+        
         <CustomButton
           content="Submit"
           iconName="add"
           floated={false}
           onSubmit={onSubmit}
-          loading={loading}
+          loading={loading.status}
         />
       </Form>
     </Layout>

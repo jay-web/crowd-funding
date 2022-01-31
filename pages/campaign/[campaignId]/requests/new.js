@@ -4,6 +4,8 @@ import campaignInstance from "../../../../ethereum/campaign";
 import web3 from "../../../../ethereum/web3";
 import { useRouter } from "next/router";
 import RequestForm from "../../../../components/newRequest";
+import { Grid, Label, Icon } from "semantic-ui-react";
+import Layout from "../../../../components/layout";
 
 const initialState = {
   recipient: "",
@@ -13,11 +15,8 @@ const initialState = {
 
 const NewRequest = (props) => {
   const [requestInfo, setRequestInfo] = useState(initialState);
-  const [error, setErrorMessage] = useState({
-    errorStatus: false,
-    errorMessage: "",
-  });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({ status: false, message: "" });
+  const [error, setError] = useState({ status: false, message: "" });
   const router = useRouter();
 
   const changeHandler = (event) => {
@@ -27,55 +26,57 @@ const NewRequest = (props) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
-    setErrorMessage({ errorStatus: false, errorMessage: "" });
-   
+    setLoading({ status: true, message: "Transacting approving request" });
+    setError({ status: false, message: "" });
+    let { description, recipient, value } = requestInfo;
+
+    if (value <= 0 || description == "" || recipient == "") {
+      setLoading({ status: false, message: "" });
+      setError({ status: true, message: "Please fill above all fields" });
+      return;
+    }
+
     try {
       const accounts = await web3.eth.getAccounts();
       const campaign = await campaignInstance(router.query.campaignId);
-      let value = web3.utils.toWei(requestInfo.value, "ether");
-      let { description, recipient } = requestInfo;
+      value = web3.utils.toWei(value, "ether");
 
       await campaign.methods
         .createRequest(description, value, recipient)
         .send({ from: accounts[0] });
-
+      setLoading({ status: false, message: "" });
       router.push("/");
     } catch (err) {
-      
-      setErrorMessage({ errorStatus: true, errorMessage: err.message });
+      setLoading({ status: false, message: "" });
+      setError({ status: true, message: err.message });
     }
-
-    setLoading(false);
+  };
+  const handleDismiss = () => {
+    setLoading({ status: false, message: "" });
+    setError({ status: false, message: "" });
   };
 
   return (
-    <RequestForm
-      onSubmit={onSubmit}
-      loading={loading}
-      handlers={changeHandler}
-      error={error}
-      info={requestInfo}
-    />
+    <Layout>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={12}>
+            <h3>Campaign :{router.query.campaignId}</h3>
+          
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+      <h1></h1>
+      <RequestForm
+        onSubmit={onSubmit}
+        loading={loading}
+        handlers={changeHandler}
+        error={error}
+        info={requestInfo}
+        handleDismiss={handleDismiss}
+      />
+    </Layout>
   );
 };
-
-// NewRequest.getInitialProps = async (props) => {
-//     const campaign = await campaignInstance(props.query.campaignId);
-
-//     let summary = await campaign.methods.getSummary().call();
-
-//     return {
-//         name: summary[0],
-//         manager: summary[1],
-//         minimumContribution: summary[2],
-//         numberOfRequests: summary[3],
-//         approversCount: summary[4],
-//         fundReceived: summary[5],
-//         description: summary[6],
-//         id: props.query.campaignId,
-//         campaign: campaign
-//       };
-// }
 
 export default NewRequest;

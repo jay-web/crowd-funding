@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import Layout from "../../../../components/layout";
-import { Grid, Message,Icon } from "semantic-ui-react";
+import { Grid, Label, Icon } from "semantic-ui-react";
 import CustomButton from "../../../../components/customButton";
 import { useRouter } from "next/router";
 
 import RequestsTable from "../../../../components/requestTable";
 import web3 from "../../../../ethereum/web3";
 import campaignInstance from "../../../../ethereum/campaign";
+import InfoMessage from "../../../../components/message";
 
 const Requests = (props) => {
   const router = useRouter();
   const id = router.query.campaignId;
-  const { requests, approversCount } = props;
+  const { requests, approversCount, name } = props;
   const [loading, setLoading] = useState({status: false, message: ''});
   const [error, setError] = useState({ status: false, message: "" });
 
@@ -61,7 +62,10 @@ const Requests = (props) => {
       <Grid>
         <Grid.Row>
           <Grid.Column width={12}>
-            <h3>Campaign :{id}</h3>
+            <h3>Campaign :{name}</h3>
+            <Label style={{marginBottom: '1rem'}}>
+        <Icon name="address card" /> {id}
+      </Label>
           </Grid.Column>
           <Grid.Column width={4}>
             <CustomButton
@@ -76,24 +80,15 @@ const Requests = (props) => {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-          <Grid.Column width={12}>
+          <Grid.Column width={16}>
             <RequestsTable
               requests={requests}
               contributor={approversCount}
               onApprove={submitApproval}
               onFinalize={finalizeRequest}
             />
-            <Message negative hidden={!error.status} onDismiss={handleDismiss}>
-              <Message.Header>Oopss !!!</Message.Header>
-              <p>{error.message}</p>
-            </Message>
-            <Message icon hidden={!loading.status}  onDismiss={handleDismiss}>
-              <Icon name="circle notched" loading={loading.status} />
-              <Message.Content>
-                <Message.Header>Please wait</Message.Header>
-                {loading.message}
-              </Message.Content>
-            </Message>
+            <InfoMessage error={error} handleDismiss={handleDismiss} loading={loading} />
+          
           </Grid.Column>
         </Grid.Row>
       </Grid>

@@ -6,7 +6,7 @@ import Head from 'next/head';
 
 const Layout = (props) => {
   return (
-    <Container>
+    <Container >
       <Head>
         <title>Crowd Funding</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />

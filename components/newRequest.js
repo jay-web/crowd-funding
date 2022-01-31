@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Input, Message } from "semantic-ui-react";
 import Layout from "./layout";
 import CustomButton from "./customButton";
+import InfoMessage from "./message";
 
 const RequestForm = (props) => {
   const requestInfo = props.info;
@@ -9,11 +10,12 @@ const RequestForm = (props) => {
   const error = props.error;
   const changeHandler = props.handlers;
   const onSubmit = props.onSubmit;
+  const handleDismiss = props.handleDismiss;
 
 
   return (
-    <Layout>
-      <Form error={error.errorStatus}>
+    
+      <Form error={error.status}>
         <Form.Field>
           <label>Request Description</label>
           <input 
@@ -44,23 +46,17 @@ const RequestForm = (props) => {
             name="recipient"
           />
         </Form.Field>
+        <InfoMessage error={error} loading={loading} handleDismiss={handleDismiss}/>
       
-        
-        <Message error negative>
-          <Message.Header>
-            Oopss!!
-          </Message.Header>
-          <p>{error.errorMessage}</p>
-        </Message>
         <CustomButton
           content="Raise Request"
           iconName="add"
           floated={false}
           onSubmit={onSubmit}
-          loading={loading}
+          loading={loading.status}
         />
       </Form>
-    </Layout>
+    
   );
 };
 

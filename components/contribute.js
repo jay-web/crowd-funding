@@ -5,22 +5,25 @@ import CustomButton from "./customButton";
 import campaignInstance from "../ethereum/campaign";
 import web3 from "../ethereum/web3";
 import { useRouter } from "next/router";
+import InfoMessage from "./message";
 
 const ContibutionForm = (props) => {
   const [contribution, setContribution] = useState(0);
-  const [error, setErrorMessage] = useState({
-    errorStatus: false,
-    errorMessage: "",
-  });
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ status: false, message: ''});
+  const [loading, setLoading] = useState({status: false, message: ''});
   const router = useRouter();
   const campaignId = props.id;
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    console.log()
-    setLoading(true);
-    setErrorMessage({ errorStatus: false, errorMessage: "" });
+    setLoading({status: true, message: 'Transacting approving request'});
+    setError({status: false, message: ''});
+
+    if(contribution <=0 ){
+      setLoading({status: false, message: ''});
+      setError({status: true, message: 'Please enter correct amount'});
+      return;
+    }
 
     try {
       const accounts = await web3.eth.getAccounts();
@@ -32,16 +35,23 @@ const ContibutionForm = (props) => {
           from: accounts[0],
           value: web3.utils.toWei(contribution, "ether"),
         });
+        setLoading({status: false, message: ''});
+        setContribution(0);
         router.replace(`/campaign/${encodeURIComponent(campaignId)}`)
-        console.log('done')
-        setContribution(0)
+      
+        
     } catch (err) {
-      console.log(err.Message);
-      setErrorMessage({ errorStatus: true, errorMessage: err.message });
+      setLoading({status: false, message: ''});
+      setError({ status: true, message: err.message });
     }
 
-    setLoading(false);
+    
   };
+
+  const handleDismiss = () => {
+    setLoading({ status: false, message: ''})
+    setError({ status: false, message: ''})
+  }
 
   return (
     <Form error={error.errorStatus}>
@@ -55,17 +65,14 @@ const ContibutionForm = (props) => {
           onChange={(event) => setContribution(event.target.value)}
         />
       </Form.Field>
-
-      <Message error negative>
-        <Message.Header>Oopss!!</Message.Header>
-        <p>{error.errorMessage}</p>
-      </Message>
+      <InfoMessage error={error} loading={loading} handleDismiss={handleDismiss}/>
+     
       <CustomButton
         content="Contribute"
         iconName="payment"
         floated={false}
         onSubmit={onSubmit}
-        loading={loading}
+        loading={loading.status}
       />
     </Form>
   );

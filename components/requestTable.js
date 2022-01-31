@@ -15,6 +15,8 @@ const RequestsTable = (props) => {
           <Table.HeaderCell>Recipient</Table.HeaderCell>
           <Table.HeaderCell>Approval Count</Table.HeaderCell>
           <Table.HeaderCell>Complete</Table.HeaderCell>
+          <Table.HeaderCell>Approve</Table.HeaderCell>
+          <Table.HeaderCell>Finalize</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>{requestRows(requests, contributor, onApprove, onFinalize)}</Table.Body>
