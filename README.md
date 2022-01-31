@@ -10,11 +10,12 @@ for the continuity of project, for which contributors will vote. If request gets
 
 
 To run this project on local development:
-1:  Clone the project into local repo
-2:  Run npm install
-3:  Run node compile.js
-4:  Run node deploy.js ( copy the deployed address from console, paste the same in note.js file )
-5:  Run npm run dev ( Check at localhost:3000 )
+
+          1:  Clone the project into local repo
+          2:  Run npm install
+          3:  Run node compile.js
+          4:  Run node deploy.js ( copy the deployed address from console, paste the same in note.js file )
+          5:  Run npm run dev ( Check at localhost:3000 )
 
 Note - Create note.js file in root folder and paste the below code :
   
