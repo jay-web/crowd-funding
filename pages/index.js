@@ -11,19 +11,53 @@ import Layout from "../components/layout";
 import { useRouter } from "next/router";
 import { Grid } from "semantic-ui-react";
 
+export async function getStaticProps({ params }) {
+  
+  let cam = await factory.methods.getDeployedCampaigns().call();
+
+  let listOfCampaigns = await Promise.all(
+    cam.map(async (el, index) => {
+      let campaign = await campaignInstance(el);
+      return await campaign.methods.getSummary().call();
+    })
+  );
+    
+  return {
+    props: {
+      listOfCampaigns: JSON.parse(JSON.stringify(listOfCampaigns)),
+      campAddress: JSON.parse(JSON.stringify(cam)),
+    },
+  };
+}
+
+
+
 const CampaignIndex = (props) => {
   const router = useRouter();
-  
+ 
   return (
     <>
       <Layout>
         <Grid>
           <Grid.Row>
             <Grid.Column width={13}>
-              <p style={{ textAlign: "center", marginBottom: "-.1rem", fontSize:"2.5rem", fontFamily: 'Bitter, serif' }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  marginBottom: "-.1rem",
+                  fontSize: "2.5rem",
+                  fontFamily: "Bitter, serif",
+                }}
+              >
                 "Out of the mountain of despair,
               </p>
-              <p style={{ textAlign: "center", fontSize:"2.5rem",fontFamily: 'Bitter, serif' }}>
+              <p
+                style={{
+                  textAlign: "center",
+                  fontSize: "2.5rem",
+                  fontFamily: "Bitter, serif",
+                }}
+              >
                 a stone of hope"
               </p>
             </Grid.Column>
@@ -38,34 +72,19 @@ const CampaignIndex = (props) => {
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <Grid >
+        <Grid>
           <Grid.Row>
-          <Campaigns
-            campaigns={props.listOfCampaigns}
-            campAddress={props.campAddress}
-          />
+            <Campaigns
+              campaigns={props.listOfCampaigns}
+              campAddress={props.campAddress}
+            />
           </Grid.Row>
-         
         </Grid>
-        
       </Layout>
     </>
   );
 };
 
-CampaignIndex.getInitialProps = async () => {
-  let cam = await factory.methods.getDeployedCampaigns().call();
-  let listOfCampaigns = await Promise.all(
-    cam.map(async (el, index) => {
-      let campaign = await campaignInstance(el);
-      return await campaign.methods.getSummary().call();
-    })
-  );
 
-  return {
-    listOfCampaigns: listOfCampaigns,
-    campAddress: cam,
-  };
-};
 
 export default CampaignIndex;

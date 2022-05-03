@@ -7,7 +7,7 @@ const Campaigns = (props) => {
   const router = useRouter();
 
   const { campaigns, campAddress } = props;
-
+  console.log("inside ", campaigns)
   const renderCampaigns = () => {
     let items = campaigns.map((campaign, index) => {
       let name = campaign[0];
@@ -22,7 +22,7 @@ const Campaigns = (props) => {
 
       return (
         <Card key={index}>
-          <Image src={`/images/image-${image}.jpg`} wrapped ui={true} />
+          <Image src={`/images/image-${image}.jpg`} wrapped ui={false} />
           <Card.Content>
             <Card.Header>{name}</Card.Header>
             <Card.Meta>
@@ -31,8 +31,12 @@ const Campaigns = (props) => {
             <Card.Description>{description}</Card.Description>
           </Card.Content>
           <Card.Content extra>
-            <Link href={`/campaign/${encodeURIComponent(deployAddress)}`}>
+          <Link href={`/campaign/${encodeURIComponent(deployAddress)}`}>
+              <a>
               View Campaign
+              </a>
+
+             
             </Link>
           </Card.Content>
         </Card>
